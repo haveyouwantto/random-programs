@@ -1,0 +1,33 @@
+TextWindow.Title="Alphabet"
+alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+path=File.GetSettingsFilePath()
+path=Text.GetSubText(path,1,Text.GetLength(path)-17)
+pathl=Text.Append(path,"list.txt")
+rows=File.ReadLine(Text.Append(path,"rows.txt"),1)
+File.DeleteFile(Text.Append(path,"rename.bat"))
+For i=1 To rows
+  content=File.ReadLine(pathl,i)
+  b=Text.GetSubText(content,7,4)+0.00
+  e=Text.GetSubTextToEnd(content,12)
+  ex=Math.Power(10,Math.Remainder(e,3))
+  exp=Math.Floor(e/3)
+  base=b*ex
+  If e>2 Then
+  da=Text.GetSubText(alphabet,Math.Remainder(exp-1,26)+1,1)
+  db=Text.GetSubText(alphabet,Math.Floor(Math.Remainder(exp-1,676)/26),1)
+Else
+  da=""
+  db=""
+  EndIf
+  File.WriteLine(Text.Append(path,"rename.bat"),i,"ren "+Text.GetCharacter(34)+content+".kfb"+Text.GetCharacter(34)+" "+Text.GetCharacter(34)+Text.GetSubText(content,1,5)+"_"+base+db+da+".kfb"+Text.GetCharacter(34))
+  'TextWindow.WriteLine("ren "+Text.GetCharacter(34)+content+".kfb"+Text.GetCharacter(34)+" "+Text.GetCharacter(34)+Text.GetSubText(content,1,5)+"_"+base+db+da+".kfb"+Text.GetCharacter(34))
+  time=Clock.ElapsedMilliseconds
+  If Math.Remainder(i,91)=0 Then
+    TextWindow.WriteLine(Math.Floor(i/rows*100)+"%  ("+i+"/"+rows+")")
+  EndIf
+EndFor
+TextWindow.ForegroundColor="Green"
+TextWindow.WriteLine("Done!")
+TextWindow.ForegroundColor="Yellow"
+TextWindow.WriteLine("Run "+Text.GetCharacter(34)+"rename.bat"+Text.GetCharacter(34)+" to apply")
+TextWindow.PauseWithoutMessage()
